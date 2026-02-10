@@ -7,12 +7,17 @@
     <style>
         /* --- Общие настройки стиля --- */
         :root {
-            --primary-color: #0056b3; /* Синий (доверие/безопасность) */
-            --accent-color: #28a745;  /* Зеленый (успех/защита) */
-            --text-dark: #333333;     /* Основной текст */
-            --text-light: #666666;    /* Вторичный текст */
-            --bg-white: #ffffff;      /* Фон */
-            --bg-light: #f8f9fa;      /* Фон блоков */
+            --primary-color: #0056b3;
+            --accent-color: #28a745;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fa;
+        }
+
+        /* ВАЖНО: Это правило предотвращает "разъезжание" сайта из-за отступов */
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         body {
@@ -21,7 +26,8 @@
             padding: 0;
             background-color: var(--bg-white);
             color: var(--text-dark);
-            line-height: 1.8;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased; /* Для четкости шрифта на iPhone */
         }
 
         img {
@@ -32,10 +38,10 @@
         }
 
         .container {
-            width: 90%;
+            width: 100%; /* Используем всю ширину */
             max-width: 1100px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px; /* Безопасные отступы по бокам */
         }
 
         /* --- Шапка --- */
@@ -51,13 +57,13 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 10px; /* Отступ если текст перенесется */
         }
 
         /* --- Первый экран (Hero) --- */
         .hero {
             padding: 80px 0;
             text-align: center;
-            /* Фон: затемненная картинка */
             background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
                         url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
         }
@@ -66,6 +72,7 @@
             font-size: 3em;
             margin-bottom: 10px;
             color: var(--text-dark);
+            line-height: 1.2;
         }
 
         .hero .slogan {
@@ -86,6 +93,7 @@
             margin-bottom: 30px;
             position: relative;
             padding-bottom: 15px;
+            line-height: 1.3;
         }
 
         h2::after {
@@ -103,20 +111,19 @@
             display: flex;
             gap: 40px;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Позволяет блокам падать друг под друга */
         }
 
         .problem-text {
             flex: 1;
-            min-width: 300px;
+            min-width: 300px; /* Базовая ширина для ПК */
         }
 
         .problem-img {
             flex: 1;
-            min-width: 300px;
+            min-width: 300px; /* Базовая ширина для ПК */
         }
         
-        /* Исправление для картинки в блоке Проблема */
         .problem-img img {
             width: 100%;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -133,7 +140,8 @@
         /* --- Блок Угрозы --- */
         .threats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Умная сетка: если места мало, карточка займет всю ширину */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -141,7 +149,7 @@
             background: var(--bg-white);
             border: 1px solid #e0e0e0;
             border-radius: 10px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s;
         }
@@ -160,7 +168,7 @@
 
         .threat-img {
             width: 100%;
-            height: 200px; /* Фиксированная высота для ровных карточек */
+            height: 200px;
             object-fit: cover;
             margin-bottom: 20px;
             border-radius: 6px;
@@ -192,7 +200,7 @@
             align-items: center;
             justify-content: center;
             margin-right: 20px;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Запрещаем кружку сжиматься */
             font-size: 1.2em;
         }
 
@@ -210,18 +218,65 @@
             gap: 30px;
         }
 
-        .footer h3 {
-            color: white;
-            border-bottom: 1px solid #555;
-            padding-bottom: 10px;
-        }
-
         .footer-bottom {
             text-align: center;
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #444;
             color: #aaa;
+        }
+
+        /* --- МОБИЛЬНАЯ АДАПТАЦИЯ (MEDIA QUERIES) --- */
+        @media (max-width: 768px) {
+            /* Уменьшаем шрифты */
+            .hero h1 {
+                font-size: 2em; /* Было 3em */
+            }
+            
+            .hero .slogan {
+                font-size: 1.2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            /* Уменьшаем отступы между секциями */
+            section {
+                padding: 40px 0;
+            }
+            
+            .hero {
+                padding: 50px 0;
+            }
+
+            /* Выстраиваем блоки в колонку и убираем жесткую ширину */
+            .problem-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .problem-text, .problem-img {
+                min-width: 100%; /* Растягиваем на всю ширину */
+            }
+
+            /* Адаптация гайдов */
+            .guide-item {
+                padding: 15px;
+            }
+            
+            .guide-number {
+                width: 30px;
+                height: 30px;
+                font-size: 1em;
+                margin-right: 15px;
+            }
+            
+            /* Шапка по центру */
+            .header-top {
+                justify-content: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -266,7 +321,6 @@
                     </div>
                 </div>
                 <div class="problem-img">
-                    <!-- Заменена ссылка на более стабильную картинку -->
                     <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Подросток с телефоном">
                 </div>
             </div>
@@ -284,25 +338,21 @@
                 <div class="threat-card">
                     <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Хакерский код" class="threat-img">
                     <h3>Технические угрозы</h3>
-                    <p><strong>Вирусы и трояны:</strong> Программы, которые маскируются под полезные файлы. Они могут зашифровать все ваши фото и требовать выкуп.</p>
-                    <p><strong>Шпионское ПО:</strong> Тихие программы, которые следят за действиями, записывают нажатия клавиш и даже подключаются к камере.</p>
+                    <p><strong>Вирусы и трояны:</strong> Программы, маскирующиеся под полезные файлы. Шифруют данные и требуют выкуп.</p>
                 </div>
 
                 <!-- Карточка 2 -->
                 <div class="threat-card">
                     <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Фишинг" class="threat-img">
                     <h3>Социальная инженерия</h3>
-                    <p><strong>Фишинг:</strong> Создание поддельных сайтов (ВК, Сбер), копирующих дизайн известных сервисов. Вы сами вводите пароль, думая, что заходите в аккаунт.</p>
-                    <p><strong>Вишинг и Смишинг:</strong> Мошенничество через телефонные звонки и СМС («Мам, скинь денег, я в беде»).</p>
+                    <p><strong>Фишинг:</strong> Поддельные сайты (ВК, Сбер), копирующие дизайн известных сервисов для кражи паролей.</p>
                 </div>
 
-                <!-- Карточка 3 (Исправлена картинка) -->
+                <!-- Карточка 3 -->
                 <div class="threat-card">
                     <img src="https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Кибербуллинг" class="threat-img">
                     <h3>Коммуникационные угрозы</h3>
-                    <p><strong>Кибербуллинг:</strong> Травля в интернете, которая может идти 24/7.</p>
-                    <p><strong>Доксинг:</strong> Сбор и публикация личной информации (адрес, школа) без согласия.</p>
-                    <p><strong>Груминг:</strong> Взрослые преступники втираются в доверие к детям под видом сверстников.</p>
+                    <p><strong>Кибербуллинг и Доксинг:</strong> Травля в интернете и публикация личной информации без согласия.</p>
                 </div>
             </div>
         </div>
@@ -312,58 +362,48 @@
     <section id="guides" class="guides-section">
         <div class="container">
             <h2>Правила цифровой гигиены</h2>
-            <p>Как мы моем руки перед едой, так и в сети нужно соблюдать правила, чтобы не «подцепить заразу». Основные принципы защиты:</p>
+            <p>Как мы моем руки перед едой, так и в сети нужно соблюдать правила:</p>
 
             <div class="guide-item">
                 <div class="guide-number">1</div>
                 <div>
                     <h3>Защита аккаунтов (2FA)</h3>
-                    <p>Обязательно включи <strong>двухфакторную аутентификацию</strong> везде, где это возможно (VK, Telegram, Почта). Даже если хакер украдет твой пароль, он не сможет войти без кода из СМС, который придет на твой телефон.</p>
+                    <p>Обязательно включи <strong>двухфакторную аутентификацию</strong>. Даже если украдут пароль, без СМС-кода войти не смогут.</p>
                 </div>
             </div>
 
             <div class="guide-item">
                 <div class="guide-number">2</div>
                 <div>
-                    <h3>Пароли — это ключи от дома</h3>
-                    <p>Не используй простые пароли типа «123456» или дату рождения. Используй разные пароли для разных сайтов. Если взломают один сайт, остальные останутся в безопасности.</p>
+                    <h3>Сложные пароли</h3>
+                    <p>Не используй даты рождения или «123456». Пароли должны быть разными для разных сайтов.</p>
                 </div>
             </div>
 
             <div class="guide-item">
                 <div class="guide-number">3</div>
                 <div>
-                    <h3>Овершеринг (Избыточность)</h3>
-                    <p>Помни про «цифровой след»: удалить информацию из сети полностью невозможно. Не публикуй фото билетов, паспортов, дорогие покупки и виды из окна, по которым можно вычислить адрес.</p>
-                </div>
-            </div>
-
-            <div class="guide-item">
-                <div class="guide-number">4</div>
-                <div>
-                    <h3>Обновления ПО</h3>
-                    <p>Регулярно обновляй операционную систему телефона и компьютера. Обновления часто закрывают «дыры», через которые проникают вирусы.</p>
+                    <h3>Овершеринг</h3>
+                    <p>Помни про «цифровой след». Не публикуй фото билетов, паспортов и дорогие покупки.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Блок: Психология (Глава 1.2) -->
+    <!-- Блок: Психология -->
     <section>
         <div class="container">
             <h2>Психология подростка в сети</h2>
             <div class="problem-content">
                 <div class="problem-img">
-                    <!-- Заменена ссылка на тематическую картинку -->
                     <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Подростки общаются">
                 </div>
                 <div class="problem-text">
-                    <p>Подростковый возраст характеризуется стремлением к самостоятельности и расширению круга общения. Интернет предоставляет для этого площадку, но создает ложное чувство безопасности.</p>
-                    <p><strong>Главные риски поведения:</strong></p>
+                    <p>Интернет создает ложное чувство безопасности и анонимности.</p>
+                    <p><strong>Главные риски:</strong></p>
                     <ul>
-                        <li><strong>Иллюзия анонимности:</strong> Уверенность в том, что «я никому не нужен» и меня никто не найдет.</li>
-                        <li><strong>Жажда лайков:</strong> Публикация личного ради одобрения окружающих.</li>
-                        <li><strong>Пренебрежение правилами:</strong> Использование легких путей в ущерб безопасности.</li>
+                        <li><strong>Иллюзия анонимности:</strong> Уверенность в том, что «меня никто не найдет».</li>
+                        <li><strong>Жажда лайков:</strong> Публикация личного ради одобрения.</li>
                     </ul>
                 </div>
             </div>
@@ -384,11 +424,11 @@
                 </div>
                 <div>
                     <h3>О проекте</h3>
-                    <p>Индивидуальный итоговый проект.<br>Тема: Создание сайта «Цифровая безопасность подростков».</p>
+                    <p>Индивидуальный итоговый проект.<br>Тема: «Цифровая безопасность подростков».</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; 2026 г. Благодарный. Все права защищены.
+                &copy; 2026 г. Благодарный.
             </div>
         </div>
     </footer>
